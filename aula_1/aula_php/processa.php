@@ -1,10 +1,10 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] === "POST") {
-        $id = $_POST["id"];
-        $title = $_POST["title"];
-        $price =  $_POST["price"];
-        $description = $_POST["description"];
-        $category = $_POST["category"];
+        $id = htmlspecialchars($_POST["id"]);
+        $title = htmlspecialchars($_POST["title"]);
+        $price = htmlspecialchars($_POST["price"]);
+        $description = htmlspecialchars($_POST["description"]);
+        $category = htmlspecialchars($_POST["category"]);
 
 
         echo "ID: " . $id . "<br>" .
