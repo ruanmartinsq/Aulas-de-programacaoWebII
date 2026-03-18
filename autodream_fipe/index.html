@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .box1 {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        width: 350px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+        margin-bottom: 10px;
+        color: #1e3c72;
+    }
+
+    h3 {
+        margin-bottom: 30px;
+        color: #555;
+        font-weight: normal;
+    }
+
+    select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    select:hover {
+        border-color: #2a5298;
+    }
+
+    select:focus {
+        outline: none;
+        border-color: #1e3c72;
+        box-shadow: 0 0 5px rgba(30, 60, 114, 0.5);
+    }
+</style>
+
+<body>
+    <div class="box1">
+        <h1>AutoDream - TABELA FIPE</h1>
+
+        <h3>Consulte veículos da tabela FIPE</h3> 
+
+        <select name="" id="opcoesCarros">
+            <option value="">Selecione uma marca</option>
+
+        </select> <select name="" id="modelosCarros" disabled>
+            <option value="">Selecione um modelo</option>
+        </select>
+    </div>
+</body>
+
+</html>
+<script>
+    const url = 'https://parallelum.com.br/fipe/api/v1/carros/marcas';
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById('opcoesCarros');
+
+            data.forEach(dados => {
+                select.appendChild(new Option(dados.nome, dados.codigo));
+                
+
+            });
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
+
+    const select = document.getElementById('opcoesCarros');
+
+    select.addEventListener('change', (event) => {
+        console.log(event.target.value);
+
+        fetch(url + '/' + event.target.value + '/modelos')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const selectModelo = document.getElementById('modelosCarros');
+                selectModelo.innerHTML = '<option value="">Selecione um modelo</option>';
+                selectModelo.disabled = false;
+                
+                data.modelos.forEach(dados => {
+                    selectModelo.appendChild(new Option(dados.nome, dados.codigo));
+                });
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+    });
+</script>
